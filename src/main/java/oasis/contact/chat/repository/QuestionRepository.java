@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Modifying
-    @Query(value = "DELETE FROM questions", nativeQuery = true)
+    @Query(value = "DELETE FROM question", nativeQuery = true)
     void deleteAllQuestions();
 
 
