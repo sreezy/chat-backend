@@ -8,8 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Modifying
-    @Query(value = "TRUNCATE TABLE questions CASCADE", nativeQuery = true)
-    void truncateTable();
+    @Query(value = "DELETE FROM questions", nativeQuery = true)
+    void deleteAllQuestions();
+
 
 }
 

@@ -49,7 +49,7 @@ public class QuestionService {
 
     @Transactional
     public void clearQuestions() {
-        questionRepository.truncateTable();
+        questionRepository.deleteAllQuestions();
     }
 
 }
