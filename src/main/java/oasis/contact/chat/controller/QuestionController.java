@@ -1,5 +1,4 @@
 package oasis.contact.chat.controller;
-import oasis.contact.chat.dto.VoteDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -7,6 +6,7 @@ import oasis.contact.chat.model.Question;
 import oasis.contact.chat.service.QuestionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,23 +46,23 @@ public class QuestionController {
     }
 
     @PutMapping("/answer/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public Question answerQuestion(@PathVariable Long id, @RequestBody String answer) {
         return questionService.answerQuestion(id, answer);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteQuestion(@PathVariable Long id) {
         questionService.deleteQuestion(id);
     }
 
-    @PostMapping("/questions/{id}/vote")
-    public ResponseEntity<?> voteOnQuestion(@PathVariable Long id, @RequestBody VoteDto voteDto, HttpServletRequest request) {
-        String ipAddress = request.getRemoteAddr();
-        questionService.voteOnQuestion(id, voteDto.getVoteValue(), ipAddress);
+    @DeleteMapping("/clear")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> clearQuestions() {
+        questionService.clearQuestions();
         return ResponseEntity.ok().build();
     }
-
-
 
 }
 
