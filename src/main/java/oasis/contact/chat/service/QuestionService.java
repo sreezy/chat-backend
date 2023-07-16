@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import oasis.contact.chat.model.Question;
 import oasis.contact.chat.repository.QuestionRepository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class QuestionService {
 
@@ -14,6 +17,14 @@ public class QuestionService {
     @Autowired
     public QuestionService(QuestionRepository questionRepository) {
         this.questionRepository = questionRepository;
+    }
+
+    public List<Question> getAllQuestions() {
+        return questionRepository.findAll();
+    }
+
+    public Optional<Question> getQuestionById(Long id) {
+        return questionRepository.findById(id);
     }
 
     public Question askQuestion(String question) {

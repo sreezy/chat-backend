@@ -25,12 +25,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/questions/ask").permitAll()
-                .antMatchers("/questions/answer/**", "/questions/**").hasRole("ADMIN")
+                .antMatchers("/questions/ask", "/questions/all", "/questions/**").permitAll()
+                .antMatchers("/questions/answer/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
