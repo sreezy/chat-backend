@@ -1,4 +1,5 @@
 package oasis.contact.chat.controller;
+import oasis.contact.chat.dto.VoteDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,6 +54,15 @@ public class QuestionController {
     public void deleteQuestion(@PathVariable Long id) {
         questionService.deleteQuestion(id);
     }
+
+    @PostMapping("/questions/{id}/vote")
+    public ResponseEntity<?> voteOnQuestion(@PathVariable Long id, @RequestBody VoteDto voteDto, HttpServletRequest request) {
+        String ipAddress = request.getRemoteAddr();
+        questionService.voteOnQuestion(id, voteDto.getVoteValue(), ipAddress);
+        return ResponseEntity.ok().build();
+    }
+
+
 
 }
 
