@@ -46,19 +46,16 @@ public class QuestionController {
     }
 
     @PutMapping("/answer/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public Question answerQuestion(@PathVariable Long id, @RequestBody String answer) {
         return questionService.answerQuestion(id, answer);
     }
 
     @DeleteMapping("/delete/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public void deleteQuestion(@PathVariable Long id) {
         questionService.deleteQuestion(id);
     }
 
     @DeleteMapping("/clear")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> clearQuestions() {
         questionService.clearQuestions();
         return ResponseEntity.ok().build();
