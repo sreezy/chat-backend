@@ -19,8 +19,8 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+    @Override
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("admin")
                 .password(passwordEncoder().encode("password"))
@@ -34,8 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable() // disable CSRF protection
                 .authorizeRequests()
-                .antMatchers("/questions/answer/**", "/questions/delete/**", "/questions/clear").hasRole("ADMIN")
                 .antMatchers("/questions/ask", "/questions/all", "/questions/**").permitAll()
+                .antMatchers("/questions/answer/**", "/questions/delete/**", "/questions/clear").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
@@ -54,11 +54,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return source;
     }
 
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
-
-
