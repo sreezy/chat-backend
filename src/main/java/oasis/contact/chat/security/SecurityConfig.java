@@ -1,5 +1,6 @@
 package oasis.contact.chat.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,12 +19,12 @@ import java.util.Arrays;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("admin")
                 .password(passwordEncoder().encode("password"))
-                .roles("ADMIN");
+                .authorities("ROLE_ADMIN");
     }
 
     @Override
@@ -33,8 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable() // disable CSRF protection
                 .authorizeRequests()
-                .antMatchers("/questions/ask", "/questions/all", "/questions/**").permitAll()
                 .antMatchers("/questions/answer/**", "/questions/delete/**", "/questions/clear").hasRole("ADMIN")
+                .antMatchers("/questions/ask", "/questions/all", "/questions/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
