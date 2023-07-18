@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable() // disable CSRF protection
                 .authorizeRequests()
-                .antMatchers("/questions/ask", "/questions/all", "/questions/**").permitAll()
+                .antMatchers("/questions/ask", "/questions/all", "/questions/single/**").permitAll()
                 .antMatchers("/questions/answer/**", "/questions/delete/**", "/questions/clear").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()

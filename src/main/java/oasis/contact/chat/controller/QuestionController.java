@@ -30,7 +30,7 @@ public class QuestionController {
         return new ResponseEntity<>(questions, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/single/{id}")
     public ResponseEntity<Question> getQuestionById(@PathVariable Long id) {
         Optional<Question> optionalQuestion = questionService.getQuestionById(id);
         if(optionalQuestion.isPresent()){
