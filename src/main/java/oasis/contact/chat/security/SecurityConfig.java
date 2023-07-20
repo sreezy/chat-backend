@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -24,27 +25,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
                 .withUser("admin")
-                .password(passwordEncoder().encode("password"))
-                .authorities("ROLE_ADMIN");
+                .password(passwordEncoder().encode("admin_password"))
+                .roles("ADMIN");
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
                 .csrf().disable() // disable CSRF protection
                 .authorizeRequests()
-                .antMatchers("/questions/ask", "/questions/all", "/questions/single/**").permitAll()
+                .antMatchers("/questions/ask", "/questions/all", "/questions/**").permitAll()
                 .antMatchers("/questions/answer/**", "/questions/delete/**", "/questions/clear").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .httpBasic();
+                .httpBasic()
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilterBefore(new AuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
-
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
