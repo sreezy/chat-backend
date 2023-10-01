@@ -1,4 +1,4 @@
-package oasis.contact.chat;
+package project.contact.chat;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

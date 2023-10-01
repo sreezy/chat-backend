@@ -1,4 +1,4 @@
-package oasis.contact.chat;
+package project.contact.chat;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
